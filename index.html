@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GovConnect — Integrated Governance Portal</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- TOP NAVIGATION BAR -->
+    <header class="navbar">
+        <div class="brand">
+            <div class="brand-icon">🏛️</div>
+            <div class="brand-text">
+                <h1>GovConnect</h1>
+                <p>One Platform for Integrated Government Services</p>
+            </div>
+        </div>
+
+        <div id="navUserArea" class="user-nav-info" style="display: none;">
+            <div class="user-badge">
+                <span id="displayRoleBadge" class="badge badge-SUBMITTED">CITIZEN</span>
+                <span style="margin-left: 6px;">ID: <strong id="displayUserId">CIT001</strong></span>
+            </div>
+            <button class="btn btn-danger btn-sm" onclick="logout()">
+                🚪 Logout
+            </button>
+        </div>
+    </header>
+
+    <main class="container">
+
+        <!-- LOGIN SECTION -->
+        <section id="loginSection" class="card auth-box">
+            <h2 class="card-title"><span>🔒</span> Portal Sign In</h2>
+            <p style="color: var(--text-muted); font-size: 13px; margin-bottom: 24px;">
+                Access citizen schemes or officer review portals with your verified credentials.
+            </p>
+
+            <div class="form-group">
+                <label for="loginRole">Select Access Role</label>
+                <select id="loginRole" onchange="onRoleChange()">
+                    <option value="citizen">👤 Citizen</option>
+                    <option value="housing_officer">🏠 Housing Officer</option>
+                    <option value="income_officer">💰 Income Officer</option>
+                    <option value="land_officer">🌾 Land Officer</option>
+                    <option value="admin">🛡️ System Administrator</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="loginCitizenId" id="idLabel">Citizen ID / Officer ID</label>
+                <input type="text" id="loginCitizenId" placeholder="e.g. CIT001 or OFFICER001" value="CIT001">
+            </div>
+
+            <button class="btn btn-primary btn-block" onclick="login()">
+                Sign In to Portal
+            </button>
+
+            <div style="margin-top: 24px; padding-top: 16px; border-top: 1px solid var(--border-color);">
+                <span style="font-size: 12px; color: var(--text-muted); font-weight: 600;">⚡ Quick Demo Logins:</span>
+                <div class="quick-login-chips">
+                    <span class="chip" onclick="quickLogin('CIT001', 'citizen')">Citizen: CIT001</span>
+                    <span class="chip" onclick="quickLogin('CIT002', 'citizen')">Citizen: CIT002</span>
+                    <span class="chip" onclick="quickLogin('OFFICER001', 'housing_officer')">Housing Officer</span>
+                    <span class="chip" onclick="quickLogin('OFFICER002', 'income_officer')">Income Officer</span>
+                    <span class="chip" onclick="quickLogin('ADMIN001', 'admin')">Admin</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- CITIZEN DASHBOARD SECTION -->
+        <section id="citizenDashboardSection" style="display: none;">
+            
+            <div class="grid-2">
+                <!-- PROFILE CARD -->
+                <div class="card">
+                    <h3 class="card-title"><span>👤</span> Citizen Profile</h3>
+                    <p style="color: var(--text-muted); font-size: 13px; margin-bottom: 20px;">
+                        Provide your details once. They will be shared across verification departments automatically.
+                    </p>
+
+                    <div class="form-group">
+                        <label for="name">Full Name</label>
+                        <input type="text" id="name" placeholder="Enter Full Name" value="Aarav Sharma">
+                    </div>
+
+                    <div class="grid-2" style="gap: 12px;">
+                        <div class="form-group">
+                            <label for="dateOfBirth">Date of Birth</label>
+                            <input type="date" id="dateOfBirth" value="1992-05-15">
+                        </div>
+                        <div class="form-group">
+                            <label for="mobile">Mobile Number</label>
+                            <input type="text" id="mobile" placeholder="10-digit mobile" value="9876543210">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="address">Residential Address</label>
+                        <textarea id="address" rows="3" placeholder="Full residential address">12/A Rajpur Road, Dehradun, Uttarakhand</textarea>
+                    </div>
+                </div>
+
+                <!-- HOUSING SCHEME ACTION CARD -->
+                <div class="card" style="display: flex; flex-direction: column; justify-content: space-between;">
+                    <div>
+                        <h3 class="card-title"><span>🏠</span> Integrated Housing Scheme (PMAY)</h3>
+                        <p style="color: var(--text-muted); font-size: 14px; line-height: 1.6; margin-bottom: 20px;">
+                            Apply for government subsidized housing without repeatedly visiting or submitting documents to separate Income and Land offices.
+                        </p>
+                        <div style="background: rgba(99, 102, 241, 0.1); border: 1px solid var(--border-glow); border-radius: var(--radius-md); padding: 16px; margin-bottom: 20px;">
+                            <h4 style="font-size: 13px; color: var(--primary); margin-bottom: 6px;">Automated Cross-Verification:</h4>
+                            <ul style="font-size: 12px; color: var(--text-muted); padding-left: 18px; line-height: 1.8;">
+                                <li>Income Department: Verifies EWS status (Income ≤ ₹3,00,000)</li>
+                                <li>Land Department: Verifies non-ownership of existing land</li>
+                                <li>Housing Officer: Performs final application review & approval</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <button class="btn btn-primary btn-block" onclick="applyForHousing()">
+                        🚀 Submit Housing Application
+                    </button>
+                </div>
+            </div>
+
+            <!-- MY APPLICATIONS -->
+            <div class="card">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                    <h3 class="card-title" style="margin-bottom: 0;"><span>📜</span> My Scheme Applications</h3>
+                    <button class="btn btn-secondary btn-sm" onclick="loadCitizenApplications()">
+                        🔄 Refresh Applications
+                    </button>
+                </div>
+
+                <div id="citizenApplications">
+                    <p style="color: var(--text-muted); font-size: 14px;">Loading applications...</p>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- OFFICER PORTAL SECTION -->
+        <section id="officerPortalSection" style="display: none;">
+            
+            <!-- OFFICER STATS -->
+            <div class="grid-3" style="margin-bottom: 24px;">
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: rgba(245, 158, 11, 0.15); color: var(--warning);">⏳</div>
+                    <div>
+                        <div class="stat-value" id="statPendingCount">0</div>
+                        <div class="stat-label">Applications Pending Review</div>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: rgba(16, 185, 129, 0.15); color: var(--success);">✅</div>
+                    <div>
+                        <div class="stat-value" id="statApprovedCount">0</div>
+                        <div class="stat-label">Applications Approved</div>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: rgba(244, 63, 94, 0.15); color: var(--danger);">❌</div>
+                    <div>
+                        <div class="stat-value" id="statRejectedCount">0</div>
+                        <div class="stat-label">Applications Rejected</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- OFFICER APPLICATION QUEUE -->
+            <div class="card">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+                    <div>
+                        <h3 class="card-title" style="margin-bottom: 4px;"><span>📋</span> Application Review Queue</h3>
+                        <p style="font-size: 13px; color: var(--text-muted);">
+                            Review cross-department verified housing applications and execute formal decisions.
+                        </p>
+                    </div>
+                    <button class="btn btn-secondary btn-sm" onclick="loadOfficerApplications()">
+                        🔄 Refresh Queue
+                    </button>
+                </div>
+
+                <div id="officerApplications">
+                    <p style="color: var(--text-muted); font-size: 14px;">Loading queue...</p>
+                </div>
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- DECISION ACTION MODAL -->
+    <div id="decisionModal" class="modal-overlay">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 style="font-size: 18px; font-weight: 700;">Review & Application Decision</h3>
+                <button class="close-btn" onclick="closeDecisionModal()">&times;</button>
+            </div>
+
+            <div id="modalAppDetails" style="margin-bottom: 20px;">
+                <!-- Application details loaded dynamically -->
+            </div>
+
+            <div class="form-group">
+                <label for="decisionReason">Decision Notes / Reason</label>
+                <textarea id="decisionReason" rows="3" placeholder="Provide justification for approval or rejection..."></textarea>
+            </div>
+
+            <div style="display: flex; gap: 12px; justify-content: flex-end; margin-top: 24px;">
+                <button class="btn btn-secondary" onclick="closeDecisionModal()">Cancel</button>
+                <button class="btn btn-danger" onclick="submitDecision('REJECTED')">❌ Reject Application</button>
+                <button class="btn btn-success" onclick="submitDecision('APPROVED')">✅ Approve Application</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- TOAST NOTIFICATIONS -->
+    <div id="toastContainer" class="toast-container"></div>
+
+    <script src="app.js"></script>
+</body>
+
+</html>
