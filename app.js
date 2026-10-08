@@ -1,9 +1,4 @@
 // =========================================================
-// DEPLOYMENT INSTRUCTION:
-// When deploying the frontend to Vercel or GitHub Pages, 
-// change this API_URL to your live API Gateway URL.
-// Example: const API_URL = "https://govconnect-gateway.onrender.com";
-// =========================================================
 const API_URL = "https://ukr-1-3.onrender.com";
 let currentActiveApplicationId = null;
 
